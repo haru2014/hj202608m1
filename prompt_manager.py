@@ -133,6 +133,36 @@ def toggle_favorite():
     print(f"즐겨찾기 {status}되었습니다.")
 
 
+def show_favorites():
+    favorites = [p for p in prompts if p.get('favorite')]
+    if not favorites:
+        print("즐겨찾기된 프롬프트가 없습니다.")
+        return
+    for idx, prompt in enumerate(favorites, start=1):
+        print(f"{idx}. ★ {prompt['title']} ({prompt['category']})")
+
+
+def add_prompt():
+    title = input("프롬프트 제목: ").strip()
+    if not title:
+        print("제목은 비워둘 수 없습니다.")
+        return
+    content = input("프롬프트 내용: ").strip()
+    if not content:
+        print("내용은 비워둘 수 없습니다.")
+        return
+    category = input("카테고리: ").strip()
+    if not category:
+        category = "일반"
+    prompts.append({
+        "title": title,
+        "content": content,
+        "category": category,
+        "favorite": False
+    })
+    print("프롬프트가 추가되었습니다.")
+
+
 def main():
     while True:
         show_menu()
@@ -147,6 +177,10 @@ def main():
             show_detail()
         elif choice == '5':
             toggle_favorite()
+        elif choice == '6':
+            show_favorites()
+        elif choice == '7':
+            add_prompt()
         elif choice == '0':
             print("프로그램을 종료합니다.")
             break

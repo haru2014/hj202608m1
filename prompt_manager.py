@@ -95,6 +95,44 @@ def search_prompt():
         print(f"{idx}. [{star}] {prompt['title']} ({prompt['category']})")
 
 
+def show_detail():
+    show_list()
+    if not prompts:
+        return
+    try:
+        choice = int(input("상세 보기할 번호 입력: ").strip())
+    except ValueError:
+        print("숫자를 입력해주세요.")
+        return
+    if choice < 1 or choice > len(prompts):
+        print("유효하지 않은 번호입니다.")
+        return
+    prompt = prompts[choice - 1]
+    print("\n--- 상세 정보 ---")
+    print(f"제목: {prompt['title']}")
+    print(f"카테고리: {prompt['category']}")
+    print(f"즐겨찾기: {'예' if prompt.get('favorite') else '아니요'}")
+    print("내용:")
+    print(prompt['content'])
+
+
+def toggle_favorite():
+    show_list()
+    if not prompts:
+        return
+    try:
+        choice = int(input("즐겨찾기 토글할 번호 입력: ").strip())
+    except ValueError:
+        print("숫자를 입력해주세요.")
+        return
+    if choice < 1 or choice > len(prompts):
+        print("유효하지 않은 번호입니다.")
+        return
+    prompts[choice - 1]['favorite'] = not prompts[choice - 1].get('favorite', False)
+    status = '추가' if prompts[choice - 1]['favorite'] else '제거'
+    print(f"즐겨찾기 {status}되었습니다.")
+
+
 def main():
     while True:
         show_menu()
@@ -105,6 +143,10 @@ def main():
             show_by_category()
         elif choice == '3':
             search_prompt()
+        elif choice == '4':
+            show_detail()
+        elif choice == '5':
+            toggle_favorite()
         elif choice == '0':
             print("프로그램을 종료합니다.")
             break

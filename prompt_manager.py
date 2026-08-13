@@ -63,12 +63,48 @@ def show_list():
         print(f"{idx}. [{star}] {prompt['title']} ({prompt['category']})")
 
 
+def show_by_category():
+    categories = sorted({prompt['category'] for prompt in prompts})
+    if not categories:
+        print("카테고리가 없습니다.")
+        return
+    print("사용 가능한 카테고리:")
+    for category in categories:
+        print(f"- {category}")
+    choice = input("조회할 카테고리 입력: ").strip()
+    filtered = [p for p in prompts if p['category'] == choice]
+    if not filtered:
+        print("해당 카테고리의 프롬프트가 없습니다.")
+        return
+    for idx, prompt in enumerate(filtered, start=1):
+        star = "★" if prompt.get("favorite") else " "
+        print(f"{idx}. [{star}] {prompt['title']}")
+
+
+def search_prompt():
+    keyword = input("검색할 키워드 입력: ").strip().lower()
+    if not keyword:
+        print("키워드를 입력해주세요.")
+        return
+    results = [p for p in prompts if keyword in p['title'].lower() or keyword in p['content'].lower()]
+    if not results:
+        print("검색 결과가 없습니다.")
+        return
+    for idx, prompt in enumerate(results, start=1):
+        star = "★" if prompt.get("favorite") else " "
+        print(f"{idx}. [{star}] {prompt['title']} ({prompt['category']})")
+
+
 def main():
     while True:
         show_menu()
         choice = input("선택: ").strip()
         if choice == '1':
             show_list()
+        elif choice == '2':
+            show_by_category()
+        elif choice == '3':
+            search_prompt()
         elif choice == '0':
             print("프로그램을 종료합니다.")
             break

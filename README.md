@@ -56,7 +56,19 @@ git config --global user.email "mickey1008@naver.com"
 git config --global init.defaultBranch main
 ```
 
+## 4단계: 브랜치 관리 및 원격 반영
+
+다음 절차를 수행하여 Git 브랜치 흐름과 원격 반영을 검증했습니다.
+
+- `feature/list` 브랜치 생성
+- 목록 기능 관련 수정 사항을 별도 브랜치에서 커밋
+- `main` 브랜치로 병합 (`git merge --no-ff feature/list`)
+- 원격 저장소로 푸시 (`git push origin main`)
+
+이 과정을 통해 브랜치 분기, 병합, 로그 확인, 원격 반영까지 실제 Git workflow를 수행했습니다.
+
 ## 참고 자료
 
 - 구현 결과 보고서: 구현결과보고서.md
 - 메인 프로그램: prompt_manager.py
+- GitHub 원격 저장소: https://github.com/haru2014/hj202608m1.git

@@ -1,4 +1,9 @@
-prompts = [
+import json
+import os
+
+DATA_FILE = "prompts.json"
+
+DEFAULT_PROMPTS = [
     {
         "title": "수의학 논문 및 임상 데이터 요약",
         "content": "당신은 수의학 및 동물응용과학 전문가입니다. 제시된 반려견 보행 관절 논문의 초록(Abstract)을 읽고 1) 연구 목적, 2) 주요 실험 결과, 3) 한계점 및 시사점을 3줄로 핵심 요약해주세요.",
@@ -18,6 +23,33 @@ prompts = [
         "favorite": False,
     },
 ]
+
+
+def load_prompts():
+    if not os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "w", encoding="utf-8") as f:
+                json.dump(DEFAULT_PROMPTS, f, ensure_ascii=False, indent=4)
+        except Exception as e:
+            print(f"기본 데이터 파일 생성 실패: {e}")
+        return [dict(p) for p in DEFAULT_PROMPTS]
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"데이터 로드 실패: {e}. 기본 데이터로 시작합니다.")
+        return [dict(p) for p in DEFAULT_PROMPTS]
+
+
+def save_prompts():
+    try:
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(prompts, f, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"데이터 저장 실패: {e}")
+
+
+prompts = load_prompts()
 
 
 def show_menu():
@@ -111,6 +143,7 @@ def toggle_favorite():
         print("유효하지 않은 번호입니다.")
         return
     prompts[choice - 1]["favorite"] = not prompts[choice - 1].get("favorite", False)
+    save_prompts()
     status = "추가" if prompts[choice - 1]["favorite"] else "제거"
     print(f"즐겨찾기 {status}되었습니다.")
 
@@ -142,6 +175,7 @@ def add_prompt():
         "category": category,
         "favorite": False,
     })
+    save_prompts()
     print("프롬프트가 추가되었습니다.")
 
 
